@@ -16,7 +16,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
         return render_template('login.html',title='Login', username=username, password=password)
-    print("Test repo")
+    
     return render_template('login.html',title='Login')
 
 @app.route('/recommend')
