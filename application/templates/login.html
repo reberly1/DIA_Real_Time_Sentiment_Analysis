@@ -1,0 +1,26 @@
+{% extends "standard.html" %}
+{% block content %}
+    <h1>Login Page</h1>
+<form method="POST">
+
+    <label for="username">Username</label>
+    <input type="text" class="form-control" id="username" name="username" placeholder="Enter Your Username" required>
+
+    <label for="password">Password</label>
+    <input type="text" class="form-control" id="password" name="password" placeholder="Enter Your Password" required>
+
+    <button type="submit">Login</button>
+
+</form>
+
+{% if username %}
+    Username: {{username}}
+{% endif %}
+
+<br>
+
+{% if password %}
+    Password: {{password}}
+{% endif %}
+
+{% endblock content %}

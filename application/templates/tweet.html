@@ -1,0 +1,17 @@
+{% extends "standard.html" %}
+{% block content %}
+<h1>Tweet Page</h1>
+
+<form method="POST">
+
+    <input type="text" class="form-control" id="tweet" name="tweet" placeholder="Enter Tweet" required>
+
+    <button type="submit">Tweet</button>
+
+</form>
+
+{% if tweet %}
+    New Tweet: <br>{{tweet}}
+{% endif %}
+
+{% endblock content %}
