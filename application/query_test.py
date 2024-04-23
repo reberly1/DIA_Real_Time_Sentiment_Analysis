@@ -13,6 +13,8 @@ if __name__ == "__main__":
     name = 'R Sanjabi'
     tweet = 'Using #github helps you revert changes you want to undo #education'
 
+    #Should be able to receive the raw tweet text as a string and extract the 
+    #hashtags and mentions from it to create/update the graph nodes
     #insert_tweet(name, tweet)
 
     #Scenario 2, standard tweet with embedded hashtags and mentions
