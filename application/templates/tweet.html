@@ -1,7 +1,11 @@
 {% extends "standard.html" %}
 {% block content %}
 <h1>Tweet Page</h1>
-
+{% if username != "" %}
+    User is currently logged in as {{username}}
+{% else %}
+    User is currently not logged in, please log in before making a tweet
+{% endif %}
 <form method="POST">
 
     <input type="text" class="form-control" id="tweet" name="tweet" placeholder="Enter Tweet" required>
