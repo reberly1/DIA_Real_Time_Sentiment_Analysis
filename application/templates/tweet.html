@@ -13,9 +13,8 @@
     <button type="submit">Tweet</button>
 
 </form>
-
-{% if tweet %}
-    New Tweet: <br>{{tweet}}
+{% if message %}
+    {{message}}
 {% endif %}
 
 {% endblock content %}

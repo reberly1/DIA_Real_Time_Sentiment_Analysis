@@ -10,11 +10,13 @@ def tweet():
     if 'username' not in session:
         session['username'] = ""
     username = session['username']
+    message = "Tweet Rejected, Please login before posting a tweet"
 
-    if request.method == 'POST':
+    if request.method == 'POST' and username != "":
         tweet = request.form['tweet']
-        return render_template('tweet.html', title="Tweet", tweet=tweet, username=username)
-    return render_template('tweet.html', title="Tweet", username=username)
+        message = "Tweet Sucessfully Posted"
+        return render_template('tweet.html', title="Tweet", tweet=tweet, username=username, message=message)
+    return render_template('tweet.html', title="Tweet", username=username, message=message)
 
 @app.route('/login', methods=['GET','POST'])
 def login():
