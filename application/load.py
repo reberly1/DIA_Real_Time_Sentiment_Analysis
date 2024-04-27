@@ -16,7 +16,7 @@ mongo_data = {}
 for node in results:
     dictionary = node.data()
 
-    mongo_data[dictionary['n']['name']] = dictionary["n"]['name']
+    mongo_data[dictionary['n']['screen_name']] = dictionary["n"]['screen_name']
 
 #Extract the tweet text from all tweets
 query_1 = "MATCH (t:Tweet) WHERE t.text IS NOT NULL Return t"
