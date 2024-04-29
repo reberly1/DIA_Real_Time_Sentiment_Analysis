@@ -1,6 +1,14 @@
 {% extends "standard.html" %}
 {% block content %}
-    <h1>Recommendations Page</h1>
-    {{recommendation}}
+    
+<h1>Recommendations Page</h1>
+
+    {% for i in range(length) %}
+        User {{i+1}}: {{recommendation[i][0]}}
+        <br>
+        Tweet from them: {{recommendation[i][1]}}
+        <br>
+        <br>
+    {% endfor %}
     
 {% endblock content %}
