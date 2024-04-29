@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, session
 from pymongo import MongoClient
 from mongo import *
+from Queries import *
 
 app = Flask(__name__)
 app.secret_key = "Dummy Key For Debugging Purposes"
@@ -14,8 +15,11 @@ def tweet():
 
     if request.method == 'POST' and username != "":
         tweet = request.form['tweet']
+        session['tweet'] = tweet
+        insert_tweet(username, tweet)
         message = "Tweet Sucessfully Posted"
         return render_template('tweet.html', title="Tweet", tweet=tweet, username=username, message=message)
+    
     return render_template('tweet.html', title="Tweet", username=username, message=message)
 
 @app.route('/login', methods=['GET','POST'])
@@ -38,4 +42,7 @@ def login():
 
 @app.route('/recommend')
 def recommend():
-    return render_template('recommend.html',title='Recommended')
+    if 'username' in session:
+        username = session['username']
+        recommendation = reccomend_tweet(username)
+        return render_template('recommend.html',title='Recommended', recommendation=recommendation)
