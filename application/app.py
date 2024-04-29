@@ -18,7 +18,6 @@ def tweet():
     if request.method == 'POST' and username != "":
         tweet = request.form['tweet']
         session['tweet'] = tweet
-        print(insert_tweet(username, tweet))
         message = "Tweet Sucessfully Posted"
         return render_template('tweet.html', title="Tweet", tweet=tweet, username=username, message=message)
     
@@ -31,13 +30,14 @@ def login():
         client = MongoClient(host=["mongodb://localhost:27017/"])
         
         username = request.form['username']
+        password = request.form['password']
         message = ""
 
-        if (check_exists(username, client)):
+        if (check_exists(username, password, client)):
             session['username'] = username
             message = "User has been logged in as " + username
         else:
-            message = "User was not found try another username"
+            message = "User could not be logged in, check username and password"
 
         return render_template('login.html',title='Login', username=username, message=message)
     
@@ -49,3 +49,5 @@ def recommend():
         username = session['username']
         recommendation = reccomend_tweet(username)
         return render_template('recommend.html',title='Recommended', recommendation=recommendation, length=len(recommendation))
+    
+    

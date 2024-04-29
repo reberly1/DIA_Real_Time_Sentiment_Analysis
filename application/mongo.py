@@ -6,7 +6,7 @@ project's functionality
 
 from pymongo import MongoClient
 
-def check_exists(username, client):
+def check_exists(username, password, client):
     """
     Description
     Confirms or denies the existance of the username in the MongoDB database
@@ -14,6 +14,9 @@ def check_exists(username, client):
     Parameters
     username:     TYPE: str
                   DESC: username being checked
+
+    password:     TYPE: str
+                  DESC: password for account
 
     client:       TYPE: MongoClient
                   DESC: Connection variable between application and MongoDB
@@ -25,8 +28,8 @@ def check_exists(username, client):
     db = client['TwitterDatabase']
     usernames = db['users']
 
-    #Counts number of users with the given username
-    result = usernames.count_documents({"username" : username})
+    #Counts number of users with the given username and password
+    result = usernames.count_documents({"username" : username, "password" : password})
 
     #If there exists a user return True
     if (result > 0):

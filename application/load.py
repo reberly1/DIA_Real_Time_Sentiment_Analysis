@@ -15,7 +15,6 @@ results, summary, keys = driver.execute_query(query, database_="neo4j")
 mongo_data = {}
 for node in results:
     dictionary = node.data()
-
     mongo_data[dictionary['n']['screen_name']] = dictionary["n"]['screen_name']
 
 #Extract the tweet text from all tweets
@@ -36,9 +35,9 @@ db = client['TwitterDatabase']
 users = db['users']
 tweets = db['tweets']
 
-#Inserts the users' name data into MongoDB
+#Inserts the users' name data into MongoDB with preset password
 for key in mongo_data:
-    users.insert_one({"username": mongo_data[key]})
+    users.insert_one({"username": mongo_data[key], "password": "Password123"})
 
 #Inserts all tweet text into the tweets collection
 for key in mongo_tweets:
