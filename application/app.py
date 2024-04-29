@@ -10,15 +10,15 @@ app.secret_key = "Dummy Key For Debugging Purposes"
 def tweet():
     if 'username' not in session:
         session['username'] = ""
-        message = "Tweet Rejected, Please login before posting a tweet"
-        return render_template('tweet.html', title="Tweet", username=username, message=message)
+        message = "Please login before posting a tweet"
+        return render_template('tweet.html', title="Tweet", message=message)
     
     username = session['username']
     
     if request.method == 'POST' and username != "":
         tweet = request.form['tweet']
         session['tweet'] = tweet
-        insert_tweet(username, tweet)
+        print(insert_tweet(username, tweet))
         message = "Tweet Sucessfully Posted"
         return render_template('tweet.html', title="Tweet", tweet=tweet, username=username, message=message)
     
@@ -40,6 +40,7 @@ def login():
             message = "User was not found try another username"
 
         return render_template('login.html',title='Login', username=username, message=message)
+    
     return render_template('login.html',title='Login')
 
 @app.route('/recommend')
