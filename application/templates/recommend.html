@@ -2,13 +2,19 @@
 {% block content %}
     
 <h1>Recommendations Page</h1>
-
-    {% for i in range(length) %}
-        User {{i+1}}: {{recommendation[i][0]}}
-        <br>
-        Tweet from them: {{recommendation[i][1]}}
-        <br>
-        <br>
-    {% endfor %}
+    
+    {% if message %}
+        {{message}}
+    {% else %}
+    
+        {% for i in range(length) %}
+            User {{i+1}}: {{recommendation[i][0]}}
+            <br>
+            Tweet from them: {{recommendation[i][1]}}
+            <br>
+            <br>
+        {% endfor %}
+    
+    {% endif %}
     
 {% endblock content %}

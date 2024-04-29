@@ -18,8 +18,13 @@ def tweet():
     if request.method == 'POST' and username != "":
         tweet = request.form['tweet']
         session['tweet'] = tweet
+        insert_tweet(username, tweet)
         message = "Tweet Sucessfully Posted"
-        return render_template('tweet.html', title="Tweet", tweet=tweet, username=username, message=message)
+        return render_template('tweet.html', title="Tweet", username=username, message=message)
+    
+    elif request.method == 'POST':
+        message = "Please login before posting a tweet"
+        return render_template('tweet.html', title="Tweet", username=username, message=message)
     
     return render_template('tweet.html', title="Tweet", username=username)
 
@@ -45,9 +50,11 @@ def login():
 
 @app.route('/recommend')
 def recommend():
-    if 'username' in session:
-        username = session['username']
-        recommendation = reccomend_tweet(username)
+    if 'tweet' in session:
+        tweet = session['tweet']
+        recommendation = reccomend_tweet(tweet)
         return render_template('recommend.html',title='Recommended', recommendation=recommendation, length=len(recommendation))
+    else:
+        return render_template('recommend.html',title='Recommended', message="Please post a tweet to receive recommendations")
     
     
