@@ -50,26 +50,56 @@ def insert_tweet(username, tweet):
        
             return cipher_Query
 
-def reccomend_tweet(tweeter):
+def reccomend_tweet(tweet_text):
       driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "L1r2c3d4!"))
+      
       with driver.session() as session:
-            reccomend_query = """
-            MATCH (u:User {screen_name: $username})-[:POSTS]->(:Tweet)-[:TAGS]->(h:Hashtag)
-            WITH u, COLLECT(DISTINCT h.name) AS hashtags
-            MATCH (other:User) -[:POSTS]->(t:Tweet)-[:TAGS]->(h2:Hashtag)
-            WHERE other <> u AND h2.name IN hashtags 
-            RETURN other.name AS user, t.text AS tweet_text
-            LIMIT 10
-            """
-            tweetresult = session.run(reccomend_query, username=tweeter)
-            reccomendationsquery = [(record["user"], record["tweet_text"]) for record in tweetresult]
-            return reccomendationsquery
+                  append_hashtag = False
+                  mentioned_users = []
+                  hashtags = []
+                  append_mention = False  
+                 
+                  for i in range(len(tweet_text)): 
+
+                        if tweet_text[i] == " ":
+                              append_mention = False 
+                              append_hashtag = False
+                        
+                        if append_mention == True:
+                              mentioned_users[len(mentioned_users) - 1] += tweet_text[i]
+                        
+                        if append_hashtag == True:
+                              hashtags[len(hashtags) - 1] += tweet_text[i]
+                        
+                        if tweet_text[i] == '@':
+                              append_mention = True
+                              mentioned_users.append("")
+                        
+                        if tweet_text[i] == '#':
+                              append_hashtag = True
+                              hashtags.append("")
+                 
+                  reccomend_query =  """
+                        MATCH (h:Hashtag)<-[:TAGS]-(t:Tweet)<-[:POSTS]-(u:User)
+                        WHERE h.name IN $hashtags OR u.screen_name IN $mentions
+                        RETURN t.text AS tweet_text, u.screen_name AS user
+                        LIMIT 10
+                  """
+                 
+                  tweetresult = session.run(reccomend_query, hashtags=hashtags, mentions=mentioned_users)
+                  reccomendationsquery = [(record["user"], record["tweet_text"]) for record in tweetresult]
+                  return reccomendationsquery
   
 if __name__ == "__main__":
-      username = "neo4j"
-      text = "How about this? @28_fireball #data"
-      Insertion = insert_tweet(username, text)
-      print(Insertion)
-      reccomendations = reccomend_tweet(username)
+      text = "How about this? @datacentretimes #data"
+      reccomendations = reccomend_tweet(text)
+      print("These are the reccomendations:", reccomendations)
+
+      text = "How about this? #graphs"
+      reccomendations = reccomend_tweet(text)
+      print("These are the reccomendations:", reccomendations)
+
+      text = "How about this? @neo4j"
+      reccomendations = reccomend_tweet(text)
       print("These are the reccomendations:", reccomendations)
 
