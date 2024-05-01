@@ -8,6 +8,7 @@ app.secret_key = "Dummy Key For Debugging Purposes"
 
 @app.route('/', methods=['GET','POST'])
 def tweet():
+    client = MongoClient(host=["mongodb://localhost:27017/"])
     if 'username' not in session:
         session['username'] = ""
         message = "Please login before posting a tweet"
@@ -19,6 +20,7 @@ def tweet():
         tweet = request.form['tweet']
         session['tweet'] = tweet
         insert_tweet(username, tweet)
+        upload_tweet(tweet, client)
         message = "Tweet Sucessfully Posted"
         return render_template('tweet.html', title="Tweet", username=username, message=message)
     
@@ -31,7 +33,6 @@ def tweet():
 @app.route('/login', methods=['GET','POST'])
 def login():
     if request.method == 'POST':
-        #Connects to the MongoDB database via MongoClient
         client = MongoClient(host=["mongodb://localhost:27017/"])
         
         username = request.form['username']

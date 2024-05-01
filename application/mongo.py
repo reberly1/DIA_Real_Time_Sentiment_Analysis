@@ -38,4 +38,31 @@ def check_exists(username, password, client):
     #Else return False
     return False
 
+def upload_tweet(tweet, username, client):
+    """
+    Description
+    Uploads tweet to mongodb for batch processing
+
+    Parameters
+    tweet:        TYPE: str
+                  DESC: tweet string being stored for batch processing
+
+    username:     TYPE: str
+                  DESC: username of the person who posted the tweet
+
+    client:       TYPE: MongoClient
+                  DESC: Connection variable between application and MongoDB
+    Returns
+    """
+    db = client['TwitterDatabase']
+    tweets = db['tweet']
+
+    #Checks for duplicates
+    result = tweets.count_documents({"author" : username, "tweet" : tweet})
+
+    if result:
+        return False
+
+    tweets.insert_one({'author': username}, {'tweet': tweet})
+    return True
 
