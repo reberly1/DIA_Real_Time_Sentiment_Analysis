@@ -18,14 +18,16 @@ for node in results:
     mongo_data[dictionary['n']['screen_name']] = dictionary["n"]['screen_name']
 
 #Extract the tweet text from all tweets
-query_1 = "MATCH (t:Tweet) WHERE t.text IS NOT NULL Return t"
+query_1 = "MATCH (t:Tweet)<-[:POSTS]-(u:User) WHERE t.text IS NOT NULL Return u.screen_name AS author, t.text AS tweet"
 
 results, summary, keys = driver.execute_query(query_1, database_="neo4j")
 
 mongo_tweets = {}
+integer = 0
 for node in results:
     dictionary = node.data()
-    mongo_tweets[dictionary['t']['id_str']] = dictionary['t']['text']
+    mongo_tweets[integer] = dictionary
+    integer += 1
 
 #Completely Deletes the database for test purposes
 client.drop_database('TwitterDatabase')
@@ -40,5 +42,5 @@ for key in mongo_data:
     users.insert_one({"username": mongo_data[key], "password": "Password123"})
 
 #Inserts all tweet text into the tweets collection
-for key in mongo_tweets:
-    tweets.insert_one({"tweet": mongo_tweets[key]})
+for i in range(integer):
+    tweets.insert_one({"author": mongo_tweets[i]['author'], "tweet": mongo_tweets[i]['tweet']})
