@@ -18,7 +18,7 @@ def sentiment(tweet):
     SET t.sentiment = $sentiment
     """
 
-    driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "L1r2c3d4!"))
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "Irunfast3***"))
 
     driver.execute_query(cipher_query, tweet=tweet, sentiment=sentiment, database_="neo4j")
 

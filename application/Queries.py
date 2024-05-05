@@ -1,7 +1,7 @@
 from neo4j import GraphDatabase, basic_auth
 
 def insert_tweet(username, tweet):  
-      driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "L1r2c3d4!"))
+      driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "Irunfast3***"))
       with driver.session() as session:
             append_hashtag = False
             mentioned_users = []
@@ -51,7 +51,7 @@ def insert_tweet(username, tweet):
             return cipher_Query
 
 def reccomend_tweet(tweet_text):
-      driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "L1r2c3d4!"))
+      driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "Irunfast3***"))
       
       with driver.session() as session:
                   append_hashtag = False
@@ -83,7 +83,7 @@ def reccomend_tweet(tweet_text):
                         MATCH (h:Hashtag)<-[:TAGS]-(t:Tweet)<-[:POSTS]-(u:User)
                         WHERE h.name IN $hashtags OR u.screen_name IN $mentions
                         RETURN t.text AS tweet_text, u.screen_name AS user
-                        LIMIT 10
+                        LIMIT 25
                   """
                  
                   tweetresult = session.run(reccomend_query, hashtags=hashtags, mentions=mentioned_users)
