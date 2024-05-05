@@ -6,7 +6,7 @@ project's functionality
 
 from pymongo import MongoClient
 
-def check_exists(username, password, client):
+def check_exists(username, password):
     """
     Description
     Confirms or denies the existance of the username in the MongoDB database
@@ -18,13 +18,10 @@ def check_exists(username, password, client):
     password:     TYPE: str
                   DESC: password for account
 
-    client:       TYPE: MongoClient
-                  DESC: Connection variable between application and MongoDB
-
     Returns       True if the username exists in the database
                   False Otherwise
     """
-    
+    client = MongoClient(host=["mongodb://localhost:27017/"])
     db = client['TwitterDatabase']
     usernames = db['users']
 
@@ -38,7 +35,7 @@ def check_exists(username, password, client):
     #Else return False
     return False
 
-def upload_tweet(tweet, username, client):
+def upload_tweet(tweet, username):
     """
     Description
     Uploads tweet to mongodb for batch processing
@@ -50,12 +47,11 @@ def upload_tweet(tweet, username, client):
     username:     TYPE: str
                   DESC: username of the person who posted the tweet
 
-    client:       TYPE: MongoClient
-                  DESC: Connection variable between application and MongoDB
     Returns
     """
+    client = MongoClient(host=["mongodb://localhost:27017/"])
     db = client['TwitterDatabase']
-    tweets = db['tweet']
+    tweets = db['tweets']
 
     #Checks for duplicates
     result = tweets.count_documents({"author" : username, "tweet" : tweet})
@@ -63,6 +59,6 @@ def upload_tweet(tweet, username, client):
     if result:
         return False
 
-    tweets.insert_one({'author': username}, {'tweet': tweet})
+    tweets.insert_one({'author': username, 'tweet': tweet})
     return True
 

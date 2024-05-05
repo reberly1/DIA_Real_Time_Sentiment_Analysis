@@ -1,14 +1,14 @@
 from neo4j import GraphDatabase, basic_auth
 
 def insert_tweet(username, tweet):  
-      driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "Irunfast3***"))
+      driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "L1r2c3d4!"))
       with driver.session() as session:
             append_hashtag = False
             mentioned_users = []
             hashtags = []
             append_mention = False  
        
-
+            #Extract the mentions and hashtags from the tweet text
             for i in range(len(tweet)): 
 
                   if tweet[i] == " ":
@@ -51,7 +51,7 @@ def insert_tweet(username, tweet):
             return cipher_Query
 
 def reccomend_tweet(tweet_text):
-      driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "Irunfast3***"))
+      driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "L1r2c3d4!"))
       
       with driver.session() as session:
                   append_hashtag = False
@@ -59,6 +59,7 @@ def reccomend_tweet(tweet_text):
                   hashtags = []
                   append_mention = False  
                  
+                  #Extract the mentions and hashtags from the tweet text
                   for i in range(len(tweet_text)): 
 
                         if tweet_text[i] == " ":
@@ -79,14 +80,17 @@ def reccomend_tweet(tweet_text):
                               append_hashtag = True
                               hashtags.append("")
                  
+                  #Returns tweets that have the same mentions and/or hashtags
                   reccomend_query =  """
                         MATCH (h:Hashtag)<-[:TAGS]-(t:Tweet)<-[:POSTS]-(u:User)
                         WHERE h.name IN $hashtags OR u.screen_name IN $mentions
                         RETURN t.text AS tweet_text, u.screen_name AS user
-                        LIMIT 25
+                        LIMIT 10
                   """
                  
                   tweetresult = session.run(reccomend_query, hashtags=hashtags, mentions=mentioned_users)
+                  
+                  #Format record data to a format that can be output for the recommendations page
                   reccomendationsquery = [(record["user"], record["tweet_text"]) for record in tweetresult]
                   return reccomendationsquery
   

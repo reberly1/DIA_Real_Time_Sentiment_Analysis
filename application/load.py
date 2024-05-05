@@ -2,7 +2,7 @@ from neo4j import GraphDatabase, basic_auth
 from pymongo import MongoClient
 
 #Connects to the neo4j database via bolt driver
-driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "Irunfast3***"))
+driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "L1r2c3d4!"))
 
 #Connects to the MongoDB database via MongoClient
 client = MongoClient(host=["mongodb://localhost:27017/"])

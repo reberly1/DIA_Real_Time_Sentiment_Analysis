@@ -6,7 +6,7 @@
     {% if message %}
         {{message}}
     {% else %}
-    
+        <!--Prints out recommendations to the site for each recommendation-->
         {% for i in range(length) %}
             User {{i+1}}: {{recommendation[i][0]}}
             <br>

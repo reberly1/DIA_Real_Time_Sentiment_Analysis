@@ -2,13 +2,14 @@ from flask import Flask, render_template, request, session
 from pymongo import MongoClient
 from mongo import *
 from Queries import insert_tweet, reccomend_tweet
+from nlp import sentiment
 
 app = Flask(__name__)
 app.secret_key = "Dummy Key For Debugging Purposes"
 
 @app.route('/', methods=['GET','POST'])
 def tweet():
-    client = MongoClient(host=["mongodb://localhost:27017/"])
+    #If user is not logged in return error message
     if 'username' not in session:
         session['username'] = ""
         message = "Please login before posting a tweet"
@@ -16,14 +17,23 @@ def tweet():
     
     username = session['username']
     
+    #If user is logged in and tweets, insert the tweet in neo4j, upload tweet to mongodb
     if request.method == 'POST' and username != "":
         tweet = request.form['tweet']
         session['tweet'] = tweet
+        
+        #Inserts tweet into neo4j
         insert_tweet(username, tweet)
-        upload_tweet(tweet, client)
+        
+        #Uploads tweet to mongodb
+        upload_tweet(tweet, username)
+        
+        #Apply nlp and update the tweet based on the sentiment
+        sentiment(tweet)
         message = "Tweet Sucessfully Posted"
         return render_template('tweet.html', title="Tweet", username=username, message=message)
     
+    #If user is not logged in and tries to tweet return error message
     elif request.method == 'POST':
         message = "Please login before posting a tweet"
         return render_template('tweet.html', title="Tweet", username=username, message=message)
@@ -39,6 +49,7 @@ def login():
         password = request.form['password']
         message = ""
 
+        #Check credentials and log them in if credentials are valid
         if (check_exists(username, password, client)):
             session['username'] = username
             message = "User has been logged in as " + username
@@ -51,6 +62,7 @@ def login():
 
 @app.route('/recommend')
 def recommend():
+    #Shows the user recommendations based on the tweet they most recently posted
     if 'tweet' in session:
         tweet = session['tweet']
         recommendation = reccomend_tweet(tweet)
