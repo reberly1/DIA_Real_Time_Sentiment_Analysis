@@ -1,4 +1,4 @@
-# DIA Real Time Setiment Analysis
+# DIA Real Time Sentiment Analysis
 
 ## These are the steps to deploy the flask application:
   ### Through VS Code:
