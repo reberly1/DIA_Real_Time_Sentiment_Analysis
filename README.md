@@ -29,12 +29,16 @@ Tweet.html: Front-end UI for inserting tweets while being logged in as a specifi
 
 ## Setup and Installation 
 1. Install python 3.12.2 and to PATH in environment variables
-2. Install Apache Kafka 3.7.0    https://kafka.apache.org/downloads
-3. Install MongoDB Compass     https://www.mongodb.com/try/download/shell
-4. Install MongoDB DB Community Server 7.0.9 https://www.mongodb.com/try/download/community
+3. Install Apache Kafka 3.7.0    https://kafka.apache.org/downloads
+4. Install MongoDB Compass     https://www.mongodb.com/try/download/compass
+5. Install MongoDB DB Community Server 7.0.9 https://www.mongodb.com/try/download/community
+6. Install Neo4j Desktop https://neo4j.com/download/?utm_source=Google&utm_medium=PaidSearch&utm_campaign=Evergreen&utm_content=AMS-Search-SEMBrand-Evergreen-None-SEM-SEM-NonABM&utm_term=download%20neo4j&utm_adgroup=download&gad_source=1&gclid=CjwKCAjw3NyxBhBmEiwAyofDYUGN5dCG44WCIp1Bz5Tl0VJoEh_1Mhb1CybiGx_TqvjS2BVum6duhBoCqQEQAvD_BwE
+7. Create database in Neo4j and import "twitter-v2-50.dump". Then click on "START" to start database. 
+8. Install Flask and Pymongo (Installation steps listed in deployment section)
+9. For MongoDB Authentication and Batch processing Storage, you'll need mongod.cfg file have replication uncommented with replName set to "rs0", Replica deployed at port 27018 and Replica deployed at 27019. 
 ## Steps to deploy the flask application
   ### Through VS Code:
-1. #### Create virutal environment
+1. #### Create virtual environment
 2. #### run `pip install Pymongo`
 4. ####  run ` pip install flask`
 5. #### type `cd application` to navigate to the application directory
