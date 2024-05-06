@@ -29,8 +29,8 @@ Tweet.html: Front-end UI for inserting tweets while being logged in as a specifi
 
 ## Setup and Installation 
 1. Install python 3.12.2 and to PATH in environment variables
-2. Install Apache Kafka 3.7.0 [https://kafka.apache.org/downloads](url)
-3. Install MongoDB Compass [https://www.mongodb.com/try/download/shell](url)
+2. Install Apache Kafka 3.7.0    [https://kafka.apache.org/downloads](url)
+3. Install MongoDB Compass     [https://www.mongodb.com/try/download/shell](url)
 ## Steps to deploy the flask application
   ### Through VS Code:
 1. #### Create virutal environment
