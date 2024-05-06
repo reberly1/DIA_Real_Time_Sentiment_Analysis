@@ -50,7 +50,7 @@ def login():
         message = ""
 
         #Check credentials and log them in if credentials are valid
-        if (check_exists(username, password, client)):
+        if (check_exists(username, password)):
             session['username'] = username
             message = "User has been logged in as " + username
         else:
